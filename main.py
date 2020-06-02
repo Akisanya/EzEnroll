@@ -4,9 +4,11 @@ import chromedriver_binary
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import collections
+from selenium.webdriver.chrome.options import Options
+from collections import defaultdict
 
 # get course from user
+# TODO: validate inpuut
 course = input(
     "Enter the course in format <course name> <course number>. Course number must be four digits (pad with 0s if necessary)\nFor Example, ECON 0100: ")
 
@@ -14,7 +16,10 @@ course = input(
 courseName = course.split()[0].upper()
 courseNumber = course.split()[1]
 
-driver = webdriver.Chrome()
+# initialize headless chrome driver
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+driver = webdriver.Chrome(options=chrome_options)
 driver.get("https://psmobile.pitt.edu/app/catalog/classSearch")
 
 # fill in course number
@@ -40,18 +45,19 @@ WebDriverWait(driver, 10).until(
 courseDivs = driver.find_elements_by_css_selector(
     '#search-results .section-content')
 
+# TODO: Handle case when there are no search results
+
 
 # course info is stored in a nested dictionary.
-# instructor -> course attrbute -> course attribute value
+# instructor -> course attrbute -> list of course attribute values
 # course attribute includes status, meeting time, meeting dates, etc
-profDict = collections.defaultdict(dict)
-temp = {}
+# https://stackoverflow.com/questions/16333296/how-do-you-create-nested-dict-in-python/16333441
+# https://stackoverflow.com/questions/5900578/how-does-collections-defaultdict-work#:~:text=A%20defaultdict%20works%20exactly%20like,returned%20by%20the%20default%20factory.
+profDict = defaultdict(dict)
 
 # extract course info from each div
 # only lectures, no labs
-# TODO: Handle duplicate professors for the same course
 # use list of strings for the value of the innermost map. Have a 'hasMultiple' key that returns true if
-# a professor has multiple sections
 for x in courseDivs:
     # extracts class number if it is a lecture
     title = x.find_element_by_css_selector('.strong.section-body').text
@@ -77,13 +83,24 @@ for x in courseDivs:
     else:
         profName = "Staff"
 
-    # skip labels in HTML and assign values in profDict
-    profDict[profName]['days/times'] = rest[0].text[12:]
-    profDict[profName]['room'] = rest[1].text[6:]
-    profDict[profName]['meeting dates'] = rest[3].text[15:]
-    profDict[profName]['status'] = rest[4].text[8:]
-    profDict[profName]['class number'] = title[title.find(
-        "(")+1:title.find(")")]
+    # fill profDict
 
+    # append to list if duplicate professor
+    if(profName in profDict.keys()):
+        profDict[profName]['days/times'].append(rest[0].text[12:])
+        profDict[profName]['room'].append(rest[1].text[6:])
+        profDict[profName]['meeting dates'].append(rest[3].text[15:])
+        profDict[profName]['status'].append(rest[4].text[8:])
+        profDict[profName]['class number'].append(title[title.find(
+            "(")+1:title.find(")")])
+
+    # initialize
+    else:
+        profDict[profName]['days/times'] = [rest[0].text[12:]]
+        profDict[profName]['room'] = [rest[1].text[6:]]
+        profDict[profName]['meeting dates'] = [rest[3].text[15:]]
+        profDict[profName]['status'] = [rest[4].text[8:]]
+        profDict[profName]['class number'] = [title[title.find(
+            "(")+1:title.find(")")]]
 
 driver.quit()

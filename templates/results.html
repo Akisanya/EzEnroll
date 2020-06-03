@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Results page</title>
+{% endblock %}
+
+{% block body %}
+<h1> Open Sections </h1>
+
+    {% for key, val in profDict.items() %}
+        {% for i in range(val['room'] | length) %}
+        <p>Instructor: {{key}}, {{val['class number'][i]}}</p>
+        <p> Meeting Times and Location: {{val['days/times'][i]}}</p>
+        <p> Room: {{val['room'][i]}}</p>
+        {% endfor %}
+    {% endfor %}
+
+<p>{{testString}}</p>
+
+{% endblock %}

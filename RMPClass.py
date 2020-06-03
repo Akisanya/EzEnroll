@@ -62,5 +62,3 @@ class RateMyProfScraper:
             print(self.professorlist[self.indexnumber][key])
             return self.professorlist[self.indexnumber][key]
 
-
-print("running")

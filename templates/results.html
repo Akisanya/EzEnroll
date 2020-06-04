@@ -10,8 +10,8 @@
     {% for key, val in profDict.items() %}
         {% for i in range(val['room'] | length) %}
         <p>Instructor: {{key}}, {{val['class number'][i]}}</p>
-        <p> Meeting Times and Location: {{val['days/times'][i]}}</p>
-        <p> Room: {{val['room'][i]}}</p>
+        <p>RMP Data: Overall Rating - {{val['RMPRating']}}, Number of Reviews - {{val['numReviews']}}</p>
+        <p> Meeting Times and Location: {{val['days/times'][i]}}, {{val['room'][i]}}</p>
         {% endfor %}
     {% endfor %}
 

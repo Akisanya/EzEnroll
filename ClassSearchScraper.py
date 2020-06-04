@@ -20,10 +20,17 @@ class PittClassSearch:
         # seperate course name and number
         self.courseName = course.split()[0].upper()
         self.courseNumber = course.split()[1]
+
+        # indicates wether the query is valid
+        self.valid = False
         # use selenium to search for the course and return divs containg the search results
         divs = self.searchClass()
-        # parse the divs and fill dictionary
-        self.profDict = self.parseDivs(divs)
+        # if the search returned a result
+        if(len(divs) > 0):
+            # parse the divs and fill dictionary
+            self.profDict = self.parseDivs(divs)
+            self.valid = True
+
         driver.quit()
 
     def searchClass(self):
@@ -87,7 +94,6 @@ class PittClassSearch:
                 profDict[profName]['days/times'].append(rest[0].text[12:])
                 profDict[profName]['room'].append(rest[1].text[6:])
                 profDict[profName]['meeting dates'].append(rest[3].text[15:])
-                profDict[profName]['status'].append(rest[4].text[8:])
                 profDict[profName]['class number'].append(title[title.find(
                     "(")+1:title.find(")")])
 
@@ -96,7 +102,6 @@ class PittClassSearch:
                 profDict[profName]['days/times'] = [rest[0].text[12:]]
                 profDict[profName]['room'] = [rest[1].text[6:]]
                 profDict[profName]['meeting dates'] = [rest[3].text[15:]]
-                profDict[profName]['status'] = [rest[4].text[8:]]
                 profDict[profName]['class number'] = [title[title.find(
                     "(")+1:title.find(")")]]
 
@@ -104,3 +109,6 @@ class PittClassSearch:
 
     def getProfDict(self):
         return self.profDict
+
+    def isValid(self):
+        return self.valid

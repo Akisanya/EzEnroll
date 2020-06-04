@@ -36,15 +36,17 @@ class RateMyProfScraper:
         return num_of_prof
 
     def SearchProfessor(self, ProfessorName):
-        self.indexnumber = self.GetProfessorIndex(ProfessorName)
-        self.PrintProfessorInfo()
-        return self.indexnumber
+        index = self.GetProfessorIndex(ProfessorName)
+        if (index):
+            self.indexnumber = index - 1
+            return True
+        return False
 
     # function searches for professor in list
     def GetProfessorIndex(self, ProfessorName):
         for i in range(0, len(self.professorlist)):
             if (ProfessorName == (self.professorlist[i]['tFname'] + " " + self.professorlist[i]['tLname'])):
-                return i
+                return i + 1
         return False  # Return False is not found
 
     def PrintProfessorInfo(self):  # print search professor's name and RMP score
@@ -54,11 +56,8 @@ class RateMyProfScraper:
             print(self.professorlist[self.indexnumber])
 
     # print search professor's name and RMP score
-    def PrintProfessorDetail(self, key):
+    def getProfessorDetail(self, key):
         if self.indexnumber == False:
-            print("error")
-            return "error"
+            return ''
         else:
-            print(self.professorlist[self.indexnumber][key])
             return self.professorlist[self.indexnumber][key]
-

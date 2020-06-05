@@ -1,20 +1,24 @@
 {% extends 'base.html' %}
 
 {% block head %}
+
 <title>Results page</title>
+<link rel="stylesheet" href="{{url_for('static', filename='css/results_styles.css')}}">
+
 {% endblock %}
 
 {% block body %}
-<h1> Open Sections </h1>
 
+<h1> Open Sections </h1>
+<div class="main-text">
     {% for key, val in profDict.items() %}
         {% for i in range(val['room'] | length) %}
-        <p>Instructor: {{key}}, {{val['class number'][i]}}</p>
-        <p>RMP Data: Overall Rating - {{val['RMPRating']}}, Number of Reviews - {{val['numReviews']}}</p>
+        <p>Instructor: {{key}}, Class #: {{val['class number'][i]}}</p>
+        <p>RateMyProfessor Data: Overall Rating - {{val['RMPRating']}}, Number of Reviews - {{val['numReviews']}}</p>
         <p> Meeting Times and Location: {{val['days/times'][i]}}, {{val['room'][i]}}</p>
+        <br>
         {% endfor %}
     {% endfor %}
-
-<p>{{testString}}</p>
+</div>
 
 {% endblock %}

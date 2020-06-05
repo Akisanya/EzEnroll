@@ -3,7 +3,7 @@
 
 {% block head %}
 <title>EzEnroll</title>
-<link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}">
+<link rel="stylesheet" href="{{url_for('static', filename='css/index_styles.css')}}">
 {% endblock %}
 
 
@@ -12,7 +12,7 @@
 <div class="searchbox">
     <form method="POST">
         <!--https://www.w3schools.com/howto/howto_js_trigger_button_enter.asp-->
-        <label for="course">Enter Course, Ex. ECE 0101: </label>
+        <label for="course">Enter Course, Ex. PSY 0010: </label>
         <input type="text" id="course" name='course'>
         <input type="submit" value="Submit" id="submitbtn">
     </form>

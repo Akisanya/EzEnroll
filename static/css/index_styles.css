@@ -5,8 +5,10 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #003594;
-    color: #FFB81c;
+    background-color: #cdb87c;
+    color: white;
+    /*background-color: #003594;
+    color: #FFB81c;*/
 }
 
 .main-heading {
@@ -27,6 +29,7 @@ input#course{
     box-sizing: border-box;
     padding: 4px 12px;
     margin-left: 6px;
+    margin-right: 6px;
     width: 10%;
     border-radius: 4px
 }

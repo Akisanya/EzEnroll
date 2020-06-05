@@ -11,11 +11,14 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+# https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
+
 
 @app.route('/', methods=['POST'])
 def getCourse():
     text = request.form['course']
-    Pitt = PittClassSearch(text)
+    # converts course code to upercase
+    Pitt = PittClassSearch(text.split()[0].upper() + " " + text.split()[1])
     profDict = Pitt.getProfDict()
 
     for key in profDict:
@@ -27,8 +30,6 @@ def getCourse():
         else:
             profDict[key]['RMPRating'] = 'Unavailable'
             profDict[key]['numReviews'] = 'Unavailable'
-
-        print(profDict)
 
     return render_template('results.html', profDict=profDict)
 

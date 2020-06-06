@@ -1,24 +1,37 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect, url_for
 from RMPClass import RateMyProfScraper
 from ClassSearchScraper import PittClassSearch
 
-# Pitt ID 1247
+# Pitt RMP ID 1247
 PittRMP = RateMyProfScraper(1247)
 app = Flask(__name__)
 
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-# https://stackoverflow.com/questions/11556958/sending-data-from-html-form-to-a-python-script-in-flask
+# home page
 
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['POST', 'GET'])
 def getCourse():
-    text = request.form['course']
-    # converts course code to upercase
-    Pitt = PittClassSearch(text.split()[0].upper() + " " + text.split()[1])
+    # if the form is being summited
+    if request.method == 'POST':
+        text = request.form['course']
+        # redirect to the results page
+        return redirect(url_for('getResults', courseName=text.split()[0].upper(), courseNum=text.split()[1]))
+
+    # go to the home page
+    else:
+        return render_template('index.html')
+
+
+# results page
+@app.route('/<string:courseName>+<string:courseNum>')
+def getResults(courseName, courseNum):
+    Pitt = PittClassSearch(courseName + " " + courseNum)
+
+    # redirect to error page if course is invalid
+    if(not Pitt.isValid()):
+        return redirect(url_for('error'))
+
+    # else fill the professor dictionary and render the result template
     profDict = Pitt.getProfDict()
 
     for key in profDict:
@@ -32,6 +45,12 @@ def getCourse():
             profDict[key]['numReviews'] = 'Unavailable'
 
     return render_template('results.html', profDict=profDict)
+
+
+# error page
+@app.route('/error')
+def error():
+    return render_template('error.html', error_msg="Course filled or not found")
 
 
 if __name__ == '__main__':

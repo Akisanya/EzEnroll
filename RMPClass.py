@@ -32,7 +32,7 @@ class RateMyProfScraper:
                 id))  # get request for page
         temp_jsonpage = json.loads(page.content)
         num_of_prof = temp_jsonpage[
-            'remaining'] + 20  # get the number of professors at William Paterson University
+            'remaining'] + 20  # get the number of professors
         return num_of_prof
 
     def SearchProfessor(self, ProfessorName):

@@ -8,15 +8,12 @@ from selenium.webdriver.chrome.options import Options
 from collections import defaultdict
 
 
-# initialize headless chrome driver
-# adds adblock: driver.add_extension('Adblock-Plus_v.crx')
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-driver = webdriver.Chrome(options=chrome_options)
-
-
 class PittClassSearch:
     def __init__(self, course):
+        # initialize headless chrome driver
+        chrome_options = Options()
+        chrome_options.add_argument("--headless")
+        driver = webdriver.Chrome(options=chrome_options)
         # seperate course name and number
         self.courseName = course.split()[0].upper()
         self.courseNumber = course.split()[1]
@@ -24,7 +21,7 @@ class PittClassSearch:
         # indicates wether the query is valid
         self.valid = False
         # use selenium to search for the course and return divs containg the search results
-        divs = self.searchClass()
+        divs = self.searchClass(driver)
         # if the search returned a result
         if(len(divs) > 0):
             # parse the divs and fill dictionary
@@ -33,7 +30,7 @@ class PittClassSearch:
 
         driver.quit()
 
-    def searchClass(self):
+    def searchClass(self, driver):
         driver.get("https://psmobile.pitt.edu/app/catalog/classSearch")
         # fill in course number
         driver.find_element_by_id('catalog-nbr').send_keys(self.courseNumber)
@@ -48,8 +45,8 @@ class PittClassSearch:
         select.select_by_value("2211")
         # click search button
         driver.find_element_by_id('buttonSearch').click()
-        # wait until page is loaded, waits maximum of 10 seconds
-        WebDriverWait(driver, 10).until(
+        # wait until page is loaded, waits maximum of 15 seconds
+        WebDriverWait(driver, 15).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, ".primary-head")))
         # contains divs containing each of the availabe courses
         courseDivs = driver.find_elements_by_css_selector(
@@ -57,11 +54,10 @@ class PittClassSearch:
         return courseDivs
 
     def parseDivs(self, courseDivs):
-        # {instructor<str> -> {course attrbute<str> -> [course attribute values]<str>}}
+        # prof dict: {instructor<str> -> {course attrbute<str> -> [course attribute values]<str>}}
         profDict = defaultdict(dict)
         # extract course info from each div
         # only lectures, no labs
-        # use list of strings for the value of the innermost map. Have a 'hasMultiple' key that returns true if
         for x in courseDivs:
             # extracts class number if it is a lecture
             title = x.find_element_by_css_selector('.strong.section-body').text

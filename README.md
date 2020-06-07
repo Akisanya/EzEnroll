@@ -4,4 +4,4 @@ Python/Flask web app that adds [RateMyProfessors](https://www.ratemyprofessors.c
 ## Demo
 <img src = "https://github.com/Akisanya/EzEnroll/blob/master/demo.gif" alt="demo gif"/>
 
-Disclaimer: A large amount of the app's loading time has been cut out of the demo for brevity purposes
+Disclaimer: Part of the app's loading time has been cut out of the demo for brevity purposes

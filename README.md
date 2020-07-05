@@ -13,3 +13,4 @@ As a student at Pitt, I've found that registering for classes can be somewhat bo
 - Flask
 - Selenium
 - HTML/CSS
+- [RMP Class](https://github.com/Rodantny/Rate-My-Professor-Scraper-and-Search): @Rodantny

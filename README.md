@@ -5,7 +5,7 @@ Python/Flask web app that adds [RateMyProfessors](https://www.ratemyprofessors.c
 <img src = "https://github.com/Akisanya/EzEnroll/blob/master/demo.gif" alt="demo gif"/>
 
 ## Motivation
-As a student at Pitt, I've found that registering for classes can be somewhat bothersome. After searching for a course in the class search site, I look at the RMP page for each professor teaching said course. This is a common practice among student which can become overwhelming due to the repeated context switching. In comes EzEnroll. By just typing in the name of a course, you will be directed to a page showing pertinent information (meeting times/location, instructor, class #) for all open sections of the course as well as RMP data (overall rating, number of reviews) for each professor teaching the course.
+As a student at Pitt, I've found that registering for classes can be somewhat bothersome. After searching for a course in the class search site, I look at the RMP page for each professor teaching said course. This is a common practice among students which can become overwhelming due to the repeated context switching. In comes EzEnroll. By just typing in the name of a course, you will be directed to a page showing pertinent information (meeting times/location, instructor, class #) for all open sections of the course as well as RMP data (overall rating, number of reviews) for each professor teaching the course.
 
 ## Technology Used
 <b>Built with</b>
@@ -13,4 +13,4 @@ As a student at Pitt, I've found that registering for classes can be somewhat bo
 - Flask
 - Selenium
 - HTML/CSS
-- [RMP Class](https://github.com/Rodantny/Rate-My-Professor-Scraper-and-Search): @Rodantny
+- Modified [RMP Class](https://github.com/Rodantny/Rate-My-Professor-Scraper-and-Search): @Rodantny
